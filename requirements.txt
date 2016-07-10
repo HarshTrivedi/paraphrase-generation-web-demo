@@ -1,41 +1,21 @@
-Flask==0.11.1
-gunicorn==19.6.0
-py2app==0.7.3
-pyobjc-core==2.5.1
-pyobjc-framework-Accounts==2.5.1
-pyobjc-framework-AddressBook==2.5.1
-pyobjc-framework-AppleScriptKit==2.5.1
-pyobjc-framework-AppleScriptObjC==2.5.1
-pyobjc-framework-Automator==2.5.1
-pyobjc-framework-CFNetwork==2.5.1
-pyobjc-framework-Cocoa==2.5.1
-pyobjc-framework-Collaboration==2.5.1
-pyobjc-framework-CoreData==2.5.1
-pyobjc-framework-CoreLocation==2.5.1
-pyobjc-framework-CoreText==2.5.1
-pyobjc-framework-DictionaryServices==2.5.1
-pyobjc-framework-EventKit==2.5.1
-pyobjc-framework-ExceptionHandling==2.5.1
-pyobjc-framework-FSEvents==2.5.1
-pyobjc-framework-InputMethodKit==2.5.1
-pyobjc-framework-InstallerPlugins==2.5.1
-pyobjc-framework-InstantMessage==2.5.1
-pyobjc-framework-LatentSemanticMapping==2.5.1
-pyobjc-framework-LaunchServices==2.5.1
-pyobjc-framework-Message==2.5.1
-pyobjc-framework-OpenDirectory==2.5.1
-pyobjc-framework-PreferencePanes==2.5.1
-pyobjc-framework-PubSub==2.5.1
-pyobjc-framework-QTKit==2.5.1
-pyobjc-framework-Quartz==2.5.1
-pyobjc-framework-ScreenSaver==2.5.1
-pyobjc-framework-ScriptingBridge==2.5.1
-pyobjc-framework-SearchKit==2.5.1
-pyobjc-framework-ServiceManagement==2.5.1
-pyobjc-framework-Social==2.5.1
-pyobjc-framework-SyncServices==2.5.1
-pyobjc-framework-SystemConfiguration==2.5.1
-pyobjc-framework-WebKit==2.5.1
-pyOpenSSL==0.13.1
-pyparsing==2.0.1
-python-dateutil==1.5
+
+# This file is used by pip to install required python packages
+# Usage: pip install -r requirements.txt
+
+# Heroku environment
+gunicorn==19.3.0
+psycopg2==2.5.4
+
+# Flask Framework
+Flask==0.10.1
+
+# Flask Packages
+Flask-Migrate==1.4.0
+Flask-SQLAlchemy==2.0
+Flask-User==0.6.3
+Flask-WTF==0.12
+
+# Development tools
+pytest==2.7.2
+pytest-flask==0.8.1
+pytest-cov==1.8.1
