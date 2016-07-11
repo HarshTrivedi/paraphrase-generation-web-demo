@@ -19,3 +19,5 @@ Flask-WTF==0.12
 pytest==2.7.2
 pytest-flask==0.8.1
 pytest-cov==1.8.1
+
+pydot==1.2.2
