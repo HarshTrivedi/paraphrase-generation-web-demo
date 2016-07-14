@@ -1,3 +1,5 @@
+import nltk
+nltk.data.path.append('./nltk_data/')
 from parse_forest_lib import *
 from fsm_lib import *
 import requests
@@ -12,6 +14,7 @@ import urllib
 import pydot
 import os
 from bllipparser.ModelFetcher import download_and_install_model
+
 
 if not os.path.exists(  os.path.join( os.getcwd(), "bllip", "models", "WSJ")  ):
 	print "Downloading the BLLIP model ... "

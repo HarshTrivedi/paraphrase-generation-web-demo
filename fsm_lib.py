@@ -1,3 +1,5 @@
+import nltk
+nltk.data.path.append('./nltk_data/')
 from collections import Counter
 from nltk import word_tokenize
 from nltk.tree import MultiParentedTree
