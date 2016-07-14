@@ -23,3 +23,5 @@ pytest-cov==1.8.1
 nltk==3.2.1
 pydot==1.2.2
 bllipparser==2015.12.3
+asciitree==0.3.2
+awesome-print==0.1.3
