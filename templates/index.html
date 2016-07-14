@@ -1,0 +1,158 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Paraphrase Generation</title>
+    
+		
+	<link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+	<!--  <link href="http://omer.dawelbeit.info/jquery.graphviz.css" rel="stylesheet"> -->
+	<style type="text/css">
+      body {
+        /*padding-top: 40px;
+        padding-bottom: 40px;*/
+        background-color: #f5f5f5;
+      }
+
+      .form-signin {
+        max-width: 1200px;
+        padding: 19px 29px 29px;
+        margin: 0 auto 20px;
+        background-color: #fff;
+        border: 1px solid #e5e5e5;
+        -webkit-border-radius: 5px;
+           -moz-border-radius: 5px;
+                border-radius: 5px;
+        -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+           -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+                box-shadow: 0 1px 2px rgba(0,0,0,.05);
+      }
+      .form-signin .form-signin-heading,
+      .form-signin .checkbox {
+        margin-bottom: 10px;
+      }
+      .form-signin input[type="text"],
+      .form-signin input[type="password"] {
+        font-size: 16px;
+        height: auto;
+        margin-bottom: 15px;
+        padding: 7px 9px;
+      }
+      textarea {
+      	width: 860px;
+      }
+
+    </style>
+  </head>
+
+  <body>
+
+    <div class="container">
+    	<div class="hero-unit">
+		  <h2>Syntax Alignment based Paraphrase Generation</h2>
+		  <p>This is a demo for the <a href="http://omerio.com/2013/11/03/running-a-graphviz-server-on-google-compute-engine/">implementation</a> of <b>'Syntax-based Alignment of Multiple Translations: Extracting Paraphrases and Generating New Sentences'</b> (<a href="http://www.isi.edu/natural-language/projects/rewrite/bopang.pdf">link</a>)
+		  </p>	  
+<!-- 		  <ul>
+		  	<li><strong>Graphviz Server: </strong><a href="https://github.com/omerio/graphviz-server">https://github.com/omerio/graphviz-server</a></li>
+		  	<li><strong>This App Engine App: </strong><a href="https://github.com/omerio/graphviz-appengine">https://github.com/omerio/graphviz-appengine</a></li>
+		  </ul> -->
+		  
+		  
+		</div>
+	  	<form class="form-signin" action="/" method="get">
+		  <div class="control-group">
+		    <label class="control-label" > <b>Write few equivalent meaning sentences:</b> </label>
+		    <div class="controls">
+		      
+{% if equivalent_lines %}
+<textarea rows="10" class="js-dot-source" name="equivalent_lines" >{{"\n".join(equivalent_lines).strip() }}</textarea>
+{% else %}
+<textarea rows="10" class="js-dot-source" name="equivalent_lines" >
+At least 12 people were killed in the battle last week
+At least 12 people lost their lives in last week's fighting
+Last week's fight took at least 12 lives
+The fighting last week killed at least 12
+The battle of last week killed at least 12 persons
+At least 12 persons died in the fighting last week
+At least 12 died in the battle last week
+At least 12 people were killed in the fighting last week
+During last week's fighting, at least 12 people died
+Last week at least twelve people died in the fighting
+Last week's fighting took the lives of twelve people
+</textarea>
+{% endif %}
+
+
+<!-- At least 12 people were killed in the battle last week
+At least 12 people lost their lives in last week's fighting
+Last week's fight took at least 12 lives
+The fighting last week killed at least 12
+The battle of last week killed at least 12 persons
+At least 12 persons died in the fighting last week
+At least 12 died in the battle last week
+At least 12 people were killed in the fighting last week
+During last week's fighting, at least 12 people died
+Last week at least twelve people died in the fighting
+Last week's fighting took the lives of twelve people
+ -->
+		    </div>
+		  </div>
+		  <div class="control-group">
+
+		    <div class="controls">
+			  <input type="submit" class="btn btn-primary" value="Get Word FSM">
+		      <!-- <button type="button" class="btn btn-primary js-render" data-loading-text="Loading...">Get Word Graph (FSM)</button> -->
+		    </div>
+		  </div>
+
+		</form>
+	    
+	    <hr>
+
+		<form class="form-signin">
+		  <label class="control-label text-center"> <b> SVG Word Graph: </b></label>
+		   <p class="text-center">Scroll In/Out to Zoom In/Out. Hold and drag to drag the fsm. </p>
+		  <div class="controls" id="js-svg-graph" style="overflow-x: scroll;overflow-y: scroll;">
+		        {{ svg|safe }}
+		  </div>
+
+		</form>
+	</div>
+	  
+	  <!-- Modal -->
+<!-- 	<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-header">
+	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+	    <h3 id="myModalLabel">Error</h3>
+	  </div>
+	  <div class="modal-body">
+	    <p>An error has occurred, please try again or log an issue in <a href="https://github.com/omerio/graphviz-appengine/issues">GitHub</a></p>
+	  </div>
+	  <div class="modal-footer">
+	    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+	  </div>
+	</div> -->
+
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script src="http://omer.dawelbeit.info/jquery.graphviz.js "></script> 
+    <script src="js/bootstrap.js"></script>
+	<script src="http://ariutta.github.io/svg-pan-zoom/dist/svg-pan-zoom.js"></script>
+	<script src="js/main.js"></script>
+    <script>
+      // Don't use window.onLoad like this in production, because it can only listen to one function.
+      window.onload = function() {
+        // Expose to window namespase for testing purposes
+        window.zoomTiger = svgPanZoom('svg', {
+          zoomEnabled: true,
+          controlIconsEnabled: true,
+          fit: true,
+          center: true,
+          // viewportSelector: document.getElementById('demo-tiger').querySelector('#g4') // this option will make library to misbehave. Viewport should have no transform attribute
+        });
+      };
+    </script>
+  </body>
+</html>
