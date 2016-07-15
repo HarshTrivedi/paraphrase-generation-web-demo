@@ -1,6 +1,6 @@
 # Paraphrase Generation web demo
 
-It is a demo Web App (built using Python Flask) for the implementation of [this paper](http://www.isi.edu/natural-language/projects/rewrite/bopang.pdf):
+It is a [demo Web App](http://paraphrase-generation-web-demo.herokuapp.com/) (built using Python Flask) for the implementation of [this paper](http://www.isi.edu/natural-language/projects/rewrite/bopang.pdf):
 
 **Syntax-based Alignment of Multiple Translations: Extracting Paraphrases
 and Generating New Sentences**
@@ -22,7 +22,7 @@ In case you plan to use it in your research, please the above paper cite using:
 ```
 
 
-Please Note: I am NOT any of the authors of of the paper. So, if you want you can consider to verify the implementation from demo app.
+Please Note: I am NOT any of the authors of of the paper. So, if you want you can consider to verify the implementation from [this demo app](http://paraphrase-generation-web-demo.herokuapp.com/).
 
 In case of any problem, please contact me at: harshjtrivedi94@gmail.com
 
