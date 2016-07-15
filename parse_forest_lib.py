@@ -110,13 +110,12 @@ class ParseForest:
 
 	@classmethod 	# class method
 	def codify_parse_string(cls, parse_string):
-		print parse_string
-		return re.sub( r'(\([\w$]+ )([\w\']+)', lambda match: match.group(1) + ParseForest.next_unique_word_id(match.group(2)) , parse_string )
+		return re.sub( r'(\([\w$\.]+ )([\w\'\.\,]+)', lambda match: match.group(1) + ParseForest.next_unique_word_id(match.group(2)) , parse_string )
 
 
 	@classmethod
 	def get_codified_tokens(cls, codified_parse_string):
-		return map( lambda match: match[1] , re.findall( r'(\([\w$]+ )([\w\']+)', codified_parse_string ) )
+		return map( lambda match: match[1] , re.findall( r'(\([\w$\.]+ )([\w\'\.\,]+)', codified_parse_string ) )
 
 
 	@classmethod 	# class method
@@ -161,21 +160,11 @@ class ParseForest:
 
 		merge_next_level = node_a.child_labels() == node_b.child_labels()
 
-		# print "++++++++++++++++++++"
-		# ap( "In ... {}   |   {} ".format( node_a.label , node_b.label ))
-		# ap(node_a.equivalences)
-		# ap(node_b.equivalences)
-		# ap( "Child labels: => {}   :   {} ".format( node_a.child_labels() , node_b.child_labels() ))
-
 		ParseForest.merge_parallel_nodes( node_a, node_b)
 
 		if not cls.check_if_permitted(node_a, node_b):
 			merge_next_level = False
-			# ap("FORBIDDEN!!!")
-		# ap("Merge allowance {}".format(merge_next_level))
-		# print "++++++++++++++++++++"
 
-		# print "At {} {} merge_next is {}".format(node_a.label, node_b.label, merge_next_level)
 		if merge_next_level:
 			for node_x, node_y in zip( node_a.children(), node_b.children() ):
 				ParseForest.merge_parallel_nodes( node_x, node_y )
@@ -187,7 +176,6 @@ class ParseForest:
 
 	@classmethod
 	def check_if_permitted(cls, node_a, node_b):
-		# ap("In check {} {}".format(node_a.label, node_b.label))
 		node_a_left_child = node_a.left_child()
 		node_a_right_child = node_a.right_child()
 		node_b_left_child = node_b.left_child()
@@ -199,24 +187,16 @@ class ParseForest:
 			tokens_x = [token for token in tokens_x if token not in stop_words]
 			tokens_y = [token for token in tokens_y if token not in stop_words]
 			condition_1 = bool(set(tokens_x) & set(tokens_y))
-			# ap("A")
-			# ap(tokens_x)
-			# ap(tokens_y)
 		else:
 			condition_1 = False
-			# ap("B")
 		if node_b_left_child is not None and node_a_right_child is not None:
 			tokens_x = map( lambda x: ParseForest.id_to_word_dictionary[int(x)] , node_b.left_child().all_equivalence_tokens())
 			tokens_y = map( lambda x: ParseForest.id_to_word_dictionary[int(x)] , node_a.right_child().all_equivalence_tokens())
 			tokens_x = [token for token in tokens_x if token not in stop_words]
 			tokens_y = [token for token in tokens_y if token not in stop_words]
 			condition_2 = bool(set(tokens_x) & set(tokens_y))
-			# ap("C")
-			# ap(tokens_x)
-			# ap(tokens_y)
 		else: 
 			condition_2 = False
-			# ap("D")
 
 		if condition_1 or condition_2:
 			return False
@@ -229,21 +209,9 @@ class ParseForest:
 
 		merge_next_level = node_a.child_labels() == node_b.child_labels()
 
-		# print "++++++++++++++++++++"
-		# ap( "In ... {}   |   {} ".format( node_a.label , node_b.label ))
-		# ap(node_a.equivalences)
-		# ap(node_b.equivalences)
-		# ap( "Child labels: => {}   :   {} ".format( node_a.child_labels() , node_b.child_labels() ))
-
-
-
 		if not cls.check_if_permitted(node_a, node_b):
 			merge_next_level = False
 
-		# ap("Merge allowance {}".format(merge_next_level))
-		# print "++++++++++++++++++++"
-
-		# print "At {} {} merge_next is {}".format(node_a.label, node_b.label, merge_next_level)
 		if merge_next_level:
 			for node_x, node_y in zip( node_a.children(), node_b.children() ):
 				ParseForest.merge_parallel_nodes( node_x, node_y )
@@ -261,8 +229,6 @@ class ParseForest:
 		for child in tree:
 
 			if type(child) is not str:
-				ap( child.left_siblings())
-				ap( child.right_siblings())
 
 				is_left_child =  ( len(child.left_siblings() ) == 0 and len(child.right_siblings()) > 0 )
 				is_right_child = ( len(child.right_siblings()) == 0 and len(child.left_siblings())  > 0 )
@@ -294,7 +260,7 @@ class ParseForest:
 	def build_forest(cls, tree):
 		sentence = " ".join(tree.leaves())
 		level = 0
-		# print "Label: '{} ' at  level {} with : '{}'".format( tree.label() , level, sentence )
+
 		if len(tree) == 1:
 			tree = tree[0]
 
@@ -314,10 +280,8 @@ class ParseForest:
 		list_of_forests = map( lambda forest: copy.copy(forest) , list_of_forests)
 		merged_forest = list_of_forests.pop()
 		for forest in list_of_forests:
-			# print "MERGE: "
 			merged_forest = ParseForest.merge_forest( merged_forest, forest )
 
-			# merged_forest.print_forest()
 		return merged_forest
 
 	# instance method

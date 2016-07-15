@@ -48,21 +48,15 @@
 
   <body>
 
-    <div class="container">
+  <div class="container">
     	<div class="hero-unit">
-		  <h2>Syntax Alignment based Paraphrase Generation</h2>
-		  <p>This is a demo for the <a href="https://github.com/HarshTrivedi/paraphrase-generation-web-demo">implementation</a> of <b>'Syntax-based Alignment of Multiple Translations: Extracting Paraphrases and Generating New Sentences'</b> (<a href="http://www.isi.edu/natural-language/projects/rewrite/bopang.pdf">link</a>)
-		  </p>	  
-<!-- 		  <ul>
-		  	<li><strong>Graphviz Server: </strong><a href="https://github.com/omerio/graphviz-server">https://github.com/omerio/graphviz-server</a></li>
-		  	<li><strong>This App Engine App: </strong><a href="https://github.com/omerio/graphviz-appengine">https://github.com/omerio/graphviz-appengine</a></li>
-		  </ul> -->
-		  
-		  
-		</div>
+  		  <h2>Syntax Alignment based Paraphrase Generation</h2>
+  		  <p>This is a demo for the <a href="https://github.com/HarshTrivedi/paraphrase-generation-web-demo">implementation</a> of <b>'Syntax-based Alignment of Multiple Translations: Extracting Paraphrases and Generating New Sentences'</b> (<a href="http://www.isi.edu/natural-language/projects/rewrite/bopang.pdf">link</a>)
+  		  </p>		  
+		  </div>
 	  	<form class="form-signin" action="/" method="get">
 		  <div class="control-group">
-		    <label class="control-label" > <b>Write few equivalent meaning sentences:</b> </label>
+		    <label class="control-label" > <b>Write few equivalent meaning sentences:</b></label>
 		    <div class="controls">
 		      
 {% if equivalent_lines %}
@@ -82,20 +76,6 @@ Last week at least twelve people died in the fighting
 Last week's fighting took the lives of twelve people
 </textarea>
 {% endif %}
-
-
-<!-- At least 12 people were killed in the battle last week
-At least 12 people lost their lives in last week's fighting
-Last week's fight took at least 12 lives
-The fighting last week killed at least 12
-The battle of last week killed at least 12 persons
-At least 12 persons died in the fighting last week
-At least 12 died in the battle last week
-At least 12 people were killed in the fighting last week
-During last week's fighting, at least 12 people died
-Last week at least twelve people died in the fighting
-Last week's fighting took the lives of twelve people
- -->
 		    </div>
 		  </div>
 		  <div class="control-group">
@@ -108,40 +88,25 @@ Last week's fighting took the lives of twelve people
 
 		</form>
 	    
-	    <hr>
+	  <hr>
 
 		<form class="form-signin">
 		  <label class="control-label text-center"> <b> SVG Word Graph: </b></label>
 		   <p class="text-center">Scroll In/Out to Zoom In/Out. Hold and drag to drag the fsm. </p>
-		  <div class="controls" id="js-svg-graph" style="overflow-x: scroll;overflow-y: scroll;">
+		  <div class="controls" id="js-svg-graph" style="overflow-x: scroll;overflow-y: scroll; " >
 		        {{ svg|safe }}
 		  </div>
 
 		</form>
 	</div>
 	  
-	  <!-- Modal -->
-<!-- 	<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	  <div class="modal-header">
-	    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-	    <h3 id="myModalLabel">Error</h3>
-	  </div>
-	  <div class="modal-body">
-	    <p>An error has occurred, please try again or log an issue in <a href="https://github.com/omerio/graphviz-appengine/issues">GitHub</a></p>
-	  </div>
-	  <div class="modal-footer">
-	    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-	  </div>
-	</div> -->
+  <br><br><br><br><br><br><br><br>
 
-
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-    <script src="http://omer.dawelbeit.info/jquery.graphviz.js "></script> 
-    <script src="js/bootstrap.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+  <script src="http://omer.dawelbeit.info/jquery.graphviz.js "></script> 
 	<script src="http://ariutta.github.io/svg-pan-zoom/dist/svg-pan-zoom.js"></script>
-	<script src="js/main.js"></script>
-    <script>
+  <script>
       // Don't use window.onLoad like this in production, because it can only listen to one function.
       window.onload = function() {
         // Expose to window namespase for testing purposes
@@ -152,7 +117,10 @@ Last week's fighting took the lives of twelve people
           center: true,
           // viewportSelector: document.getElementById('demo-tiger').querySelector('#g4') // this option will make library to misbehave. Viewport should have no transform attribute
         });
+        if(parseInt($('svg')[0].getAttribute("height").match(/\d+/)[0]) < 60){
+            $('svg')[0].setAttribute("height", "200px");
+        }        
       };
-    </script>
+  </script>
   </body>
 </html>

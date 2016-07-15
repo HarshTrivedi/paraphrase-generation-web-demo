@@ -8,8 +8,6 @@ import copy
 import re
 from itertools import groupby
 from parse_forest_lib import *
-# from bllipparser import RerankingParser
-# from bllipparser.ModelFetcher import download_and_install_model
 import itertools
 
 
@@ -50,11 +48,6 @@ class Fsm:
 				next_node.previouses[key] = fsm_node_a
 				self.token_start_dictionary[key] = fsm_node_a
 				self.token_end_dictionary[key] = next_node
-			# print "======"
-			# ap(map(lambda x: x.id, self.all_nodes))
-			# print "----"
-			# ap(fsm_node_b.id)
-			# print "======"
 			self.all_nodes.remove(fsm_node_b)
 
 	def print_fsm( self ):
@@ -134,8 +127,6 @@ class Fsm:
 		self.merge_fsm_nodes( node_x, node_y )
 
 	def list_nodes(self):
-		# if self.all_nodes is not None:
-		# 	return self.all_nodes
 		start = self.start
 		nodes = [start]
 		nodes.extend(start.nexts.values())
@@ -157,7 +148,6 @@ class Fsm:
 		self.all_nodes
 		for node_x in self.all_nodes:
 			for key, node_y in node_x.nexts.items():
-				ap("{} {}".format(key, node_y.id))
 				node_x.nexts.__delitem__(key)
 				node_x.nexts[ParseForest.id_to_word_dictionary[int(key)]] = node_y
 			for key, node_y in node_x.previouses.items():
@@ -167,8 +157,6 @@ class Fsm:
 
 
 	def sqeeze(self):
-		# ap("======= About to Squeeze ==============")
-		# list_of_nodes = self.list_nodes()
 
 		all_merges_made = set()
 		merges_made = 100
@@ -179,11 +167,9 @@ class Fsm:
 				for word_key, word_key_count in Counter(word_keys).items():
 					if word_key_count > 1:
 						keys = filter( lambda key: ParseForest.id_to_word_dictionary[int(key)] == word_key , node_x.nexts.keys())
-						# ap(keys)
 						nodes = map( lambda key: node_x.nexts[key], keys)
 						for node_a, node_b in itertools.combinations( nodes, 2):
 							if node_a.id != node_b.id:
-								# ap(all_merges_made)								
 
 								if not all_merges_made.__contains__( "-".join([str(node_a.id), str(node_b.id)])):
 									if not self.is_connected(node_a, node_b):
@@ -193,19 +179,15 @@ class Fsm:
 											all_merges_made.add("-".join([str(node_b.id), str(node_a.id)]))
 											merges_made += 1
 									else:
-										print "Need to put epsilon  {}   {}".format(node_a.id, node_b.id)
 										if node_b in node_a.nexts.values():
 											word_id = ParseForest.next_unique_word_id("*e*")
-											# put epsilon from A to B
 											node_a.nexts[word_id] = node_b
 											node_b.previouses[word_id] = node_a
 										else:
 											word_id = ParseForest.next_unique_word_id("*e*")
-											# put epsilon from B to A
 											node_b.nexts[word_id] = node_a
 											node_a.previouses[word_id] = node_b
 										all_merges_made.add("-".join([str(node_a.id), str(node_b.id)]))
-		# ap(merges_made)
 
 		merges_made = 100
 		while merges_made > 0:
@@ -215,37 +197,27 @@ class Fsm:
 				for word_key, word_key_count in Counter(word_keys).items():
 					if word_key_count > 1:
 						keys = filter( lambda key: ParseForest.id_to_word_dictionary[int(key)] == word_key , node_x.previouses.keys())
-						# ap(keys)
 						nodes = map( lambda key: node_x.previouses[key], keys)
 						for node_a, node_b in itertools.combinations( nodes, 2):
 							if node_a.id != node_b.id:
-								# ap(all_merges_made)
 								if not all_merges_made.__contains__( "-".join([str(node_a.id), str(node_b.id)])):
 									if not self.is_connected(node_a, node_b):
-										# ap("{} - {}".format(node_a.id, node_b.id))
 										if node_b in self.all_nodes:
 											self.merge_fsm_nodes(node_a, node_b)
 											all_merges_made.add("-".join([str(node_a.id), str(node_b.id)]))
 											all_merges_made.add("-".join([str(node_b.id), str(node_a.id)]))
 											merges_made += 1
 									else:
-										print "Need to put epsilon  {}   {}".format(node_a.id, node_b.id)
 										if node_b in node_a.nexts.values():
 											word_id = ParseForest.next_unique_word_id("*e*")
-											# put epsilon from A to B
 											node_a.nexts[word_id] = node_b
 											node_b.previouses[word_id] = node_a
 										else:
 											word_id = ParseForest.next_unique_word_id("*e*")
-											# put epsilon from B to A
 											node_b.nexts[word_id] = node_a
 											node_a.previouses[word_id] = node_b
 
 										all_merges_made.add("-".join([str(node_a.id), str(node_b.id)]))
-			# ap(merges_made)
-
-		# ap("ALl merges")
-		# ap(all_merges_made)
 
 
 class FsmNode:
