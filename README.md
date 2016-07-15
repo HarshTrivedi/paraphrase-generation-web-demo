@@ -8,7 +8,7 @@ and Generating New Sentences**
 
 If you want to use this implementation any purpose, please use [this](https://github.com/HarshTrivedi/paraphrase-generation) repo.
 
-In case you plan to use it in your research, please cite using:
+In case you plan to use it in your research, please the above paper cite using:
 
 ```
 @inproceedings{pang2003syntax,
@@ -22,6 +22,8 @@ In case you plan to use it in your research, please cite using:
 ```
 
 
-PS: I am NOT any of the authors of of the paper. 
+Please Note: I am NOT any of the authors of of the paper. So, if you want you can consider to verify the implementation from demo app.
 
 In case of any problem, please contact me at: harshjtrivedi94@gmail.com
+
+Hope you find it useful : )
