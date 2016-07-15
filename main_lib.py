@@ -58,7 +58,7 @@ def get_fsm_code(list_of_sentences):
 	node_definition = "	node [shape = circle, width=.2, fixedsize=true, label=\"\" ];\n"
 	fsm_commands = (fsm.get_graphvis_commands())
 	fsm_commands = list( set(fsm_commands) )
-	fsm_commands.sort()
+
 	transition_definitions = "\n".join( fsm_commands )
 	post = "\n}"
 	fsm_gv_code_snipped = pre + start_end_definitions + node_definition + transition_definitions + post
