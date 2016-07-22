@@ -4,6 +4,10 @@ app = Flask(__name__)
 from main_lib import *
 from awesome_print import ap
 
+if app.debug is not True:   
+    import logging
+    app.logger.setLevel(logging.ERROR)
+
 @app.route('/')
 def home():
 	equivalent_lines = request.args.get("equivalent_lines")
@@ -24,4 +28,4 @@ def internal_error(exception):
 	return error_html, 500
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run(debug=False)
