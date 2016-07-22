@@ -20,7 +20,8 @@ def home():
 @app.errorhandler(500)
 def internal_error(exception):
 	app.logger.error(exception)
-	return render_template('500.html'), 500
+	error_html = "<html><head><title>Internal Server Error</title></head><body><h1><p>Internal Server Error</p></h1></body></html>"
+	return error_html, 500
 
 if __name__ == '__main__':
 	app.run(debug=True)
