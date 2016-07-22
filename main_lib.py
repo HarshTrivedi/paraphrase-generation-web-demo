@@ -31,7 +31,7 @@ def get_svg(data):
 
 def get_fsm_code(list_of_sentences):
 	global rrp
-	list_of_parsed_strings = map( lambda sentence: rrp.simple_parse(str(sentence)) , list_of_sentences)
+	list_of_parsed_strings = map( lambda sentence: rrp.simple_parse((str(sentence)).lower()) , list_of_sentences)
 	list_of_codified_parse_strings = map( lambda parse_string: ParseForest.codify_parse_string(parse_string) , list_of_parsed_strings)
 	list_of_parse_forests = map( lambda codified_parse_string: ParseForest(codified_parse_string),  list_of_codified_parse_strings)
 	# list_of_parse_forests = map( lambda codified_parse_string: ParseForest(codified_parse_string),  list_of_parsed_strings)
