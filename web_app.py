@@ -17,5 +17,10 @@ def home():
 	return render_template('index.html', svg = fsm_svg, equivalent_lines = equivalent_lines)
 
 
+@app.errorhandler(500)
+def internal_error(exception):
+	app.logger.error(exception)
+	return render_template('500.html'), 500
+
 if __name__ == '__main__':
 	app.run(debug=True)
