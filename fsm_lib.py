@@ -28,7 +28,7 @@ class Fsm:
 
 	# instance method
 	def get_node(self, id):
-		nodes = self.list_nodes()
+		nodes = self.all_nodes
 		return filter(lambda node: node.id == id, nodes)[0]
 
 	# merge b in a's place
@@ -60,19 +60,20 @@ class Fsm:
 
 
 	def merge_fsm_nodes(self, fsm_node_a, fsm_node_b ):
-		print "{} {}".format( fsm_node_a.id, fsm_node_b.id)
 		if fsm_node_a.id != fsm_node_b.id:
-			for key, prev_node in fsm_node_b.previouses.items():
-				prev_node.nexts[key] = fsm_node_a 
-				fsm_node_a.previouses[key] = prev_node 
-				self.token_start_dictionary[key] = prev_node
-				self.token_end_dictionary[key] = fsm_node_a
-			for key, next_node in fsm_node_b.nexts.items():
-				fsm_node_a.nexts[key] = next_node
-				next_node.previouses[key] = fsm_node_a
-				self.token_start_dictionary[key] = fsm_node_a
-				self.token_end_dictionary[key] = next_node
-			self.all_nodes.remove(fsm_node_b)
+			print "{} {}".format( fsm_node_a.id, fsm_node_b.id)
+			if not self.is_remotely_connected(fsm_node_a, fsm_node_b):
+				for key, prev_node in fsm_node_b.previouses.items():
+					prev_node.nexts[key] = fsm_node_a 
+					fsm_node_a.previouses[key] = prev_node 
+					self.token_start_dictionary[key] = prev_node
+					self.token_end_dictionary[key] = fsm_node_a
+				for key, next_node in fsm_node_b.nexts.items():
+					fsm_node_a.nexts[key] = next_node
+					next_node.previouses[key] = fsm_node_a
+					self.token_start_dictionary[key] = fsm_node_a
+					self.token_end_dictionary[key] = next_node
+				self.all_nodes.remove(fsm_node_b)
 
 	def print_fsm( self ):
 		start = self.start
@@ -97,21 +98,12 @@ class Fsm:
 			self.print_sub_fsm(next_node)
 
 	def get_graphvis_commands(self):
-		start = self.start
 		commands = []
-		for key, next_node in start.nexts.items():
-			command = "	{} -- {} [ label = \"{}\" ];".format(start.id, next_node.id, key)
-			commands.append( command )
-			commands.extend( self.get_graphvis_subcommands(next_node) )
+		for node in self.all_nodes:
+			for key, next_node in node.nexts.items():
+				command = "	{} -- {} [ label = \"{}\" ];".format(node.id, next_node.id, key)
+				commands.append( command )
 		return list(set(commands))
-
-	def get_graphvis_subcommands(self, start):
-		commands = []
-		for key, next_node in start.nexts.items():
-			command = "	{} -- {} [ label = \"{}\" ];".format(start.id, next_node.id, key)
-			commands.append( command )
-			commands.extend( self.get_graphvis_subcommands(next_node) )
-		return commands
 
 
 	# instance method
@@ -175,9 +167,36 @@ class Fsm:
 				node_x.nexts.__delitem__(key)
 				node_x.nexts[ParseForest.id_to_word_dictionary[int(key)]] = node_y
 			for key, node_y in node_x.previouses.items():
+				node_x.previouses.__delitem__(key)
 				node_x.previouses[ParseForest.id_to_word_dictionary[int(key)]] = node_y
 			print "\n"
 
+
+	def check_consistency(self):
+		self.all_nodes
+		for source_node in self.all_nodes:
+			# ap(source_node.nexts)
+			# ap(source_node.previouses)
+			for key, next_node in source_node.nexts.items():
+				target_node = source_node.nexts[key]
+				if target_node.previouses.get(key, None) != source_node:
+					ap( "A bug problem: Next")
+					ap( "{} {}".format(source_node.id, key, target_node.id))
+					return 
+				if target_node not in self.all_nodes:
+					ap( "Suspicious New Node in way of nexts")
+					ap( target_node.id)
+					return
+			for key, prev_node in source_node.previouses.items():
+				target_node = source_node.previouses[key]
+				if target_node.nexts.get(key, None) != source_node:
+					ap( "A bug problem: Previous")
+					ap( "{} {}".format(source_node.id, key, target_node.id))
+					return None
+				if target_node not in self.all_nodes:
+					ap( "Suspicious New Node in way previouses")
+					ap( target_node.id)
+					return
 
 
 	def sqeeze(self):
@@ -201,7 +220,7 @@ class Fsm:
 											all_merges_made.add("-".join([str(node_a.id), str(node_b.id)]))
 											all_merges_made.add("-".join([str(node_b.id), str(node_a.id)]))
 											merges_made += 1
-									else:
+									elif self.is_connected(node_a, node_b):
 										if node_b in node_a.nexts.values():
 											word_id = ParseForest.next_unique_word_id("*e*")
 											node_a.nexts[word_id] = node_b
@@ -246,7 +265,7 @@ class Fsm:
 											all_merges_made.add("-".join([str(node_a.id), str(node_b.id)]))
 											all_merges_made.add("-".join([str(node_b.id), str(node_a.id)]))
 											merges_made += 1
-									else:
+									elif self.is_connected(node_a, node_b):
 										if node_b in node_a.nexts.values():
 											word_id = ParseForest.next_unique_word_id("*e*")
 											node_a.nexts[word_id] = node_b
@@ -271,7 +290,7 @@ class Fsm:
 													target_node.nexts.__delitem__(redundant_edge)
 
 										all_merges_made.add("-".join([str(node_a.id), str(node_b.id)]))
-
+		ap(all_merges_made)
 
 class FsmNode:
 
