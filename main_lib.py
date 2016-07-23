@@ -51,7 +51,8 @@ def get_fsm_code(list_of_sentences):
 			fsm.merge_parallel_tokens(tokens_1, tokens_2)
 
 	fsm.sqeeze()
-	fsm.convert_to_word_edges()
+	# fsm.convert_to_word_edges()
+
 
 	pre = "graph finite_state_machine {\n	rankdir=LR; \n        size=\"9,9\";\n"
 	# start_end_definitions = "	node [shape = doublecircle ]; 1 2;\n".format(fsm.start.id, fsm.end.id)
@@ -61,8 +62,13 @@ def get_fsm_code(list_of_sentences):
 	fsm_commands = (fsm.get_graphvis_commands())
 	fsm_commands = list( set(fsm_commands) )
 
+	fsm_commands = map( lambda command: re.sub( r'(label = ")(\d+)', lambda match: match.group(1) + ParseForest.id_to_word_dictionary[int(match.group(2))] , command ) , fsm_commands)
+	fsm_commands = list( set(fsm_commands) )
+
 	transition_definitions = "\n".join( fsm_commands )
 	post = "\n}"
 	fsm_gv_code_snipped = pre + start_end_definitions + node_definition + transition_definitions + post
 
 	return fsm_gv_code_snipped
+
+# set(['17-26', '7-28', '9-4', '28-7', '3-8', '4-9', '13-20', '18-11', '11-18', '6-27', '12-19', '26-17', '20-13', '27-6', '14-21', '19-12', '21-14', '8-3'])
