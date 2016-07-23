@@ -213,7 +213,7 @@ class Fsm:
 						for node_a, node_b in itertools.combinations( nodes, 2):
 							if node_a.id != node_b.id:
 								intersection = [x for x in [node_a.id, node_b.id] if x in [self.start.id, self.end.id]]
-								if not all_merges_made.__contains__( "-".join([str(node_a.id), str(node_b.id)])) and len(intersection) == 0:
+								if not all_merges_made.__contains__( "-".join([str(node_a.id), str(node_b.id)])):
 									if not self.is_remotely_connected(node_a, node_b):
 										if node_b in self.all_nodes:
 											self.merge_fsm_nodes(node_a, node_b)
@@ -258,7 +258,7 @@ class Fsm:
 						for node_a, node_b in itertools.combinations( nodes, 2):
 							if node_a.id != node_b.id:
 								intersection = [x for x in [node_a.id, node_b.id] if x in [self.start.id, self.end.id]]
-								if not all_merges_made.__contains__( "-".join([str(node_a.id), str(node_b.id)])) and len(intersection) == 0:
+								if not all_merges_made.__contains__( "-".join([str(node_a.id), str(node_b.id)])):
 									if not self.is_remotely_connected(node_a, node_b):
 										if node_b in self.all_nodes:
 											self.merge_fsm_nodes(node_a, node_b)
